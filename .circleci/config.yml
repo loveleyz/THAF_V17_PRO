@@ -33,12 +33,6 @@ jobs:
             echo -e "Initializing minimal manifest repo sync..."
             repo init --depth=1 -u git://github.com/minimal-manifest-twrp/platform_manifest_twrp_omni.git -b twrp-6.0
             
-            echo -e "\nRemoving Unimportant Darwin-specific Files from syncing"
-            cd .repo/manifests
-            find . -type f -name '*.xml' | xargs sed -i '/darwin/d'
-            git commit -a -m "Magic" || true
-            cd ../ && sed -i '/darwin/d' manifest.xml && cd ../
-            
             # Local manifests. Some builds fail if the file path does not exist.
             mkdir -p .repo/local_manifests && cat \<<EOF > .repo/local_manifests/v17.xml
             <?xml version="1.0" encoding="UTF-8"?>
@@ -48,15 +42,7 @@ jobs:
             EOF
             
             repo sync -c -q --force-sync --no-clone-bundle --no-tags -j$(nproc --all)
-            
-            # Unshallow vendor_omni
-            repo forall vendor/omni -c "git fetch --unshallow omnirom android-6.0"
-            # Retain "roomservice: Do not overwrite existing repositories"
-            repo forall vendor/omni -c "git revert 718f4c2fd6890f5eaa2d4972b1c3f3f582b5da47 -Xtheirs --no-edit --no-commit"
-            # Retain "roomservice: Do not overwrite existing devices"
-            repo forall vendor/omni -c "git revert 380d19cea2857d5901d7e7163f65ccc66d7bbad7 -Xtheirs --no-edit --no-commit"
-            # Add those retains into local commit
-            repo forall vendor/omni -c "git commit -m 'Fix Build from forked/personal repos'"
+
             echo -e "\nPreparing Delicious Lunch..."
             export ALLOW_MISSING_DEPENDENCIES=true
             source build/envsetup.sh
