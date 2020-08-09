@@ -48,7 +48,7 @@ TARGET_KERNEL_CONFIG := v17_defconfig
 
 # Platform
 # Fix this
-#TARGET_BOARD_PLATFORM := 
+TARGET_BOARD_PLATFORM := mt6580
 #TARGET_BOARD_PLATFORM_GPU := 
 
 # Assert
@@ -77,6 +77,7 @@ PLATFORM_VERSION := 16.1.0
 # TWRP Configuration
 TW_THEME := portrait_hdpi
 TW_EXTRA_LANGUAGES := true
+TW_DEFAULT_LANGUAGE := en
 TW_SCREEN_BLANK_ON_BOOT := true
 TW_INPUT_BLACKLIST := "hbtp_vm"
 TW_USE_TOOLBOX := true
